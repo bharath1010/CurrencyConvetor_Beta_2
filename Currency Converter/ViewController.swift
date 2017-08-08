@@ -76,7 +76,7 @@ class ViewController: UIViewController ,UIPickerViewDelegate ,UITextFieldDelegat
         fromCurrency.layer.borderWidth=1.0
         fromCurrency.layer.borderColor=UIColor.white.cgColor;
         
-                
+        
         toCurrency.layer.borderWidth=1.0
         toCurrency.layer.borderColor=UIColor.white.cgColor;
         
