@@ -219,6 +219,7 @@
 				TargetAttributes = {
 					FA7CF5C81F3981000098EE58 = {
 						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = STQBEF7U48;
 						ProvisioningStyle = Automatic;
 					};
 					FA7CF5DC1F3981040098EE58 = {
@@ -446,7 +447,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = STQBEF7U48;
 				INFOPLIST_FILE = "Currency Converter/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.falconnect.Currency-Converter";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -458,7 +461,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = STQBEF7U48;
 				INFOPLIST_FILE = "Currency Converter/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.falconnect.Currency-Converter";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -539,6 +544,7 @@
 				FA7CF5F31F3981070098EE58 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FA7CF5F41F3981070098EE58 /* Build configuration list for PBXNativeTarget "Currency ConverterTests" */ = {
 			isa = XCConfigurationList;
@@ -547,6 +553,7 @@
 				FA7CF5F61F3981070098EE58 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FA7CF5F71F3981070098EE58 /* Build configuration list for PBXNativeTarget "Currency ConverterUITests" */ = {
 			isa = XCConfigurationList;
@@ -555,6 +562,7 @@
 				FA7CF5F91F3981070098EE58 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

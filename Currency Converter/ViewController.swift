@@ -9,58 +9,64 @@
 import UIKit
 
 class ViewController: UIViewController ,UIPickerViewDelegate ,UITextFieldDelegate {
-
-    var picker:UIPickerView!
+    //Declaration
     
+    //UIPickerview
+    var picker:UIPickerView!
     // Array
     var currencyBalance: [Double] = [1000.00,0.00,0.00]
     var flag = ["euro.png","us.png","jpy.png"];
     var currencyName=["Euro (€)","Dollar ($)","JPY (¥)"]
     var currencySymbol = ["EUR","USD","JPY"]
-    
-    
+   
+    //UIButton
     @IBOutlet weak var convert: UIButton!
+    
+    //UIView
     @IBOutlet weak var toView: UIView!
     @IBOutlet weak var fromView: UIView!
+    var viewbackground : UIView = UIView();
+   
+    //UITextField
     @IBOutlet weak var commission: UITextField!
-    @IBOutlet weak var jpyBalance: UILabel!
-    @IBOutlet weak var dollarBalance: UILabel!
-    @IBOutlet weak var euroBalance: UILabel!
     @IBOutlet weak var fromCurrency: UITextField!
     @IBOutlet weak var toImg: UITextField!
     @IBOutlet weak var fromImg: UITextField!
-    @IBOutlet weak var fromLabel: UILabel!
-    @IBOutlet weak var toLabel: UILabel!
+    @IBOutlet weak var fromLabel: UITextField!
+    @IBOutlet weak var toLabel: UITextField!
     @IBOutlet weak var toCurrency: UITextField!
-    
-    var actInd: UIActivityIndicatorView = UIActivityIndicatorView()
-    var viewbackground : UIView = UIView();
-    
     var activeTF : UITextField!
-    
+   
+    //UILabel
+    @IBOutlet weak var jpyBalance: UILabel!
+    @IBOutlet weak var dollarBalance: UILabel!
+    @IBOutlet weak var euroBalance: UILabel!
+    @IBOutlet weak var success: UILabel!
+   
+    //UIAcitityIndicator
+    var actInd: UIActivityIndicatorView = UIActivityIndicatorView()
+   
+    //Int values
     var activeTextField = 0
-    
-    var activeValue = ""
-    
-    //Url parameters
-    var fromCur = ""
-    
-    var  toCur = ""
-    
-    var amount = ""
-    
     var indexValue = 0
-    
-    var baseAmount = 0.00
-    
     var i = 0
     
-    var commissionAmount = 0.00
+    //Url parameters
+    //String
+    var fromCur = ""
+    var  toCur = ""
+    var amount = ""
+    var activeValue = ""
     
+    //Double
+    var commissionAmount = 0.00
+    var baseAmount = 0.00
     var checkAmount = 0.00
     
+    //image
     
-
+    var image:UIImage = UIImage()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +76,7 @@ class ViewController: UIViewController ,UIPickerViewDelegate ,UITextFieldDelegat
         fromCurrency.layer.borderWidth=1.0
         fromCurrency.layer.borderColor=UIColor.white.cgColor;
         
+                
         toCurrency.layer.borderWidth=1.0
         toCurrency.layer.borderColor=UIColor.white.cgColor;
         
@@ -85,17 +92,20 @@ class ViewController: UIViewController ,UIPickerViewDelegate ,UITextFieldDelegat
         
         toCur = "USD"
         
+        //activity allcation to view
         actInd.frame = CGRect(x: 0,y: 5,width: 40,height: 40);
         actInd.center = view.center
         actInd.hidesWhenStopped = true
         actInd.activityIndicatorViewStyle =
             UIActivityIndicatorViewStyle.whiteLarge
         view.addSubview(actInd)
+        actInd.isHidden = true
+
+        //activity
         viewbackground.frame = view.frame
         viewbackground.isHidden = true
         viewbackground.backgroundColor = UIColor.clear
         view.addSubview(viewbackground)
-        actInd.isHidden = true
         
         
         
@@ -108,12 +118,15 @@ class ViewController: UIViewController ,UIPickerViewDelegate ,UITextFieldDelegat
 
     }
     
+
     @IBAction func convertPressed(_ sender: Any) {
         
+        //activity show
+
         actInd.startAnimating()
         viewbackground.isHidden = false
 
-        
+        //getting the input
         amount = fromCurrency.text!
         
         self.indexValue = self.currencySymbol.index(of: self.fromCur)!
@@ -126,33 +139,38 @@ class ViewController: UIViewController ,UIPickerViewDelegate ,UITextFieldDelegat
         
         if amount == "" || amount == "0"
         {
-            
+            //activity hide
+
             self.actInd.stopAnimating()
             viewbackground.isHidden = true
 
 
-            let alert = UIAlertController(title: "Error", message: "Please enter amount", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "Invaild", message: "Please enter the vaild amount", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
         else if fromCur.isEqual(toCur)
         {
+            //activity hide
+
             self.actInd.stopAnimating()
             viewbackground.isHidden = true
 
-
-            let alert = UIAlertController(title: "Error", message: "Please select the correct Currenecy", preferredStyle: UIAlertControllerStyle.alert)
+            
+            let alert = UIAlertController(title: "Same currency", message: "You are not allowed to transfer to the same account", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
 
         }
             else if (checkAmount < 0)
         {
+            //activity hide
+
             self.actInd.stopAnimating()
             viewbackground.isHidden = true
 
-
-            let alert = UIAlertController(title: "Error", message: "Low amount in the wallet", preferredStyle: UIAlertControllerStyle.alert)
+            //Error alert
+            let alert = UIAlertController(title: "Insufficent Balance", message: "Your balance is insufficent to make this transaction", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
 
@@ -162,6 +180,7 @@ class ViewController: UIViewController ,UIPickerViewDelegate ,UITextFieldDelegat
         //API Function call GET Method
             
         let url = URL(string: "http://api.evp.lt/currency/commercial/exchange/\(amount)-\(fromCur)/\(toCur)/latest")
+            
         URLSession.shared.dataTask(with: url!, completionHandler: {
             (data, response, error) in
             if(error != nil){
@@ -182,7 +201,9 @@ class ViewController: UIViewController ,UIPickerViewDelegate ,UITextFieldDelegat
                     
                     OperationQueue.main.addOperation({
                         
-                        if self.i == 5
+                        //Commission calculation
+                        
+                        if self.i >= 5
                         {
                             self.amount = self.fromCurrency.text!
                             self.commissionAmount = (Double(self.amount)! * 0.7) / 100;
@@ -195,21 +216,30 @@ class ViewController: UIViewController ,UIPickerViewDelegate ,UITextFieldDelegat
                         
                         self.baseAmount = self.currencyBalance[self.indexValue]
                         
-                        //Getting base amount value
+                        //Getting base amount value with commmision
                         self.baseAmount = Double(self.currencyBalance[self.indexValue]) - Double(self.amount)! - self.commissionAmount
                         
                         
                         self.currencyBalance[self.indexValue] = self.baseAmount;
                         
+                        //Reinitalize the balance
                         self.initBalance()
 
+                        //Coverted currency
                         self.toCurrency.text! = (json["amount"] as? String)!
 
+                        
+                        //i iteration for commission calculation
                         self.i += 1
                         
+                        //activity hide
                         self.actInd.stopAnimating()
                         self.viewbackground.isHidden = true
-
+                        
+                        //success transcation
+                        
+                        self.success.text = String(format: "You have converted \(self.amount) \(self.fromCur) to \((json["amount"] as? String)!) \(self.toCur). Commission Fee - %.2f \(self.fromCur).", self.commissionAmount)
+                        
                     })
                     
                 }catch let error as NSError{
@@ -239,9 +269,9 @@ class ViewController: UIViewController ,UIPickerViewDelegate ,UITextFieldDelegat
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         
         //Uiview with imageview and label
-        let myView = UIView(frame: CGRect(x: 0,y: 0,width: pickerView.bounds.width - 30,height: 50))
+        let myView = UIView(frame: CGRect(x: 0,y: 0,width: pickerView.bounds.width - 30,height: 40))
         
-        let myImageView = UIImageView(frame:  CGRect(x: 0,y: 5,width: 30,height: 30))
+        let myImageView = UIImageView(frame:  CGRect(x: 50,y: 5,width: 30,height: 30))
         
         
         var rowString = String()
@@ -249,7 +279,7 @@ class ViewController: UIViewController ,UIPickerViewDelegate ,UITextFieldDelegat
         rowString = currencyName[row]
         myImageView.image = UIImage(named:flag[row])
         
-        let myLabel = UILabel(frame:  CGRect(x: 60,y: 0,width: pickerView.bounds.width - 90,height: 60) )
+        let myLabel = UILabel(frame:  CGRect(x: 120,y: 5,width: pickerView.bounds.width - 90,height: 30) )
         myLabel.font = UIFont(name:myLabel.font.familyName, size: 18)
         myLabel.text = rowString
         
@@ -266,14 +296,14 @@ class ViewController: UIViewController ,UIPickerViewDelegate ,UITextFieldDelegat
         switch activeTextField {
         case 1:
             
-            let image = UIImage(named: flag[row]);
+            image = UIImage(named: flag[row])!;
             fromImg.background=image;
             fromLabel.text=currencyName[row];
             fromCur = currencySymbol[row];
         
         case 2:
             
-            let image = UIImage(named: flag[row]);
+            image = UIImage(named: flag[row])!;
             toImg.background=image;
             toLabel.text=currencyName[row];
             toCur = currencySymbol[row];
@@ -308,6 +338,10 @@ class ViewController: UIViewController ,UIPickerViewDelegate ,UITextFieldDelegat
             activeTextField = 1
         case toImg:
             activeTextField = 2
+        case fromLabel:
+            activeTextField = 1
+        case toLabel:
+            activeTextField = 2
         default:
             activeTextField = 0
         }
@@ -335,11 +369,14 @@ class ViewController: UIViewController ,UIPickerViewDelegate ,UITextFieldDelegat
         
         // deletates
         picker.delegate = self
-        
-        
+    
         picker.backgroundColor = UIColor.clear
+        
+        //intialize picker to textfield
         toImg.inputView = self.picker
         fromImg.inputView = self.picker
+        fromLabel.inputView = self.picker
+        toLabel.inputView = self.picker
 
         
         // toolBar
